@@ -19,7 +19,7 @@ for work in job_provider.json():
     # and job.id not in db
     if job.isValid():
         if not DB.hasKey(job.id):
-            print(job.info())
+            telegram.send(job.info())
         
         DB.add(job.id, {
             "created_at": job.created_at,
