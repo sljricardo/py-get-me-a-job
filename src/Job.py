@@ -1,10 +1,11 @@
+import re
+
 class Job:
 
     def __init__(self, job):
-        self.allowed = ["php", "javascript", "nodejs", "python", "express", "laravel", "vue"]
-        self.denied  = ["java", "c#", "c++", ".net", "ruby", "rails", "swift", "Kotlin", "golang", "angular", "react", "scala", "elixir"]
+        self.allowed_words = r"php|javascript|nodejs|express|laravel|vue"
+        self.denied_words  = r"java|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
         self.job     = job
-        self.valid   = False
 
     def __getattr__(self, name):
         return self.job[name]
@@ -19,14 +20,14 @@ class Job:
         [Read More]({ self.job['url'] }) """
 
     def isValid(self):
-        for allow in self.allowed:
-            if allow in self.job['title'].lower() and allow in self.job['description'].lower():
-                self.valid = True
-                break
 
-        for deny in self.denied:
-            if deny in self.job['title'].lower() and deny in self.job['description'].lower():
-                self.valid = False
-                break
-            
-        return self.valid
+        hasMatch    = lambda patern, string: any(re.findall(patern, string, re.IGNORECASE))
+        job_content = self.job['title'] + " " + self.job['description']
+
+        if hasMatch(self.denied_words, job_content):
+            return False
+
+        if hasMatch(self.allowed_words, job_content):
+            return True
+
+        return False

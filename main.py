@@ -1,27 +1,29 @@
 import os
 import requests
-import shelve
 from dotenv import load_dotenv
 from src.Job import Job
 from src.Telegram import Telegram
+from src.DB import DB
 
 # Load content from .env file
 load_dotenv('.env')
 
-db           = shelve.open('store')
 job_provider = requests.get('https://jobs.github.com/positions.json')
 telegram     = Telegram(os.getenv("BOT_TOKEN"),os.getenv("BOT_ID"))
+DB           = DB(os.path.abspath('store'))
 
 for work in job_provider.json():
 
     job = Job(work)
 
-    if job.isValid() and job.id not in db:
-        telegram.send(job.info())
+    # and job.id not in db
+    if job.isValid():
+        if not DB.hasKey(job.id):
+            print(job.info())
         
-        db[job.id] = {
+        DB.add(job.id, {
             "created_at": job.created_at,
             "info": job.id
-        }
+        })
 
-db.close()
+DB.close()
