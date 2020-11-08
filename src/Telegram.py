@@ -1,4 +1,5 @@
 import requests
+import os
 
 class Telegram:
 
@@ -11,7 +12,10 @@ class Telegram:
 
     def send(self, msg):
         content = self.__endpoint(msg)
-        requests.get(content)
-        pass
+
+        if os.environ.get('ENV') != 'dev':
+            requests.get(content)
+        else:
+            print(content)
 
 

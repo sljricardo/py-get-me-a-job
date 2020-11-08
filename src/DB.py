@@ -1,4 +1,5 @@
 import shelve
+import os
 
 class DB:
 
@@ -7,10 +8,12 @@ class DB:
 
     def add(self, key, value):
         self.db[key] = value
-        pass
 
     def hasKey(self, key):
-        return True if key in self.db else False
+        if os.environ.get('ENV') != 'dev':
+            return True if key in self.db else False
+        else:
+            return False
 
     def close(self):
         self.db.close()

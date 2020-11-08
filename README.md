@@ -15,4 +15,5 @@ Now you have the **token** and the **id**, create a .env file in the root and re
 ```txt
 BOT_TOKEN=yourToken
 BOT_ID=yourID
+ENV=prod
 ```
