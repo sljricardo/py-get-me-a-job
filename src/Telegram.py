@@ -10,12 +10,15 @@ class Telegram:
     def __endpoint(self, msg):
         return f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.id}&parse_mode=Markdown&text={msg}' 
 
-    def send(self, msg):
-        content = self.__endpoint(msg)
+    def send(self, msgs):
+    
+        if os.environ.get('ENV') == 'dev':
+            return self.__endpoint(msgs)
 
-        if os.environ.get('ENV') != 'dev':
-            requests.get(content)
+        if isinstance(msgs, list):
+            for msg in msgs:
+                requests.get(self.__endpoint(msg))
         else:
-            return content
+            requests.get(self.__endpoint(msgs))
 
 

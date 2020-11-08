@@ -1,29 +1,22 @@
 import os
-import requests
+
 from dotenv import load_dotenv
-from src.Job import Job
 from src.Telegram import Telegram
-from src.DB import DB
+from src.JobProvider import JobProvider
 
 # Load content from .env file
 load_dotenv('.env')
 
-job_provider = requests.get('https://jobs.github.com/positions.json')
-telegram     = Telegram(os.getenv("BOT_TOKEN"),os.getenv("BOT_ID"))
-DB           = DB(os.path.abspath('store'))
+jobs_providers = [
+    ('gitHubJobs','https://jobs.github.com/positions.json')
+]
 
-for work in job_provider.json():
+for provider in jobs_providers:
 
-    job = Job(work)
+    jobs = JobProvider(provider).getJobs()
 
-    # and job.id not in db
-    if job.isValid():
-        if not DB.hasKey(job.id):
-            telegram.send(job.info())
-        
-        DB.add(job.id, {
-            "created_at": job.created_at,
-            "info": job.id
-        })
-
-DB.close()
+    if jobs is not None:
+        Telegram(
+            os.getenv("BOT_TOKEN"),
+            os.getenv("BOT_ID")
+        ).send(jobs)
