@@ -16,6 +16,6 @@ class Telegram:
         if os.environ.get('ENV') != 'dev':
             requests.get(content)
         else:
-            print(content)
+            return content
 
 
