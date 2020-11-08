@@ -4,7 +4,7 @@ class Job:
 
     def __init__(self, job):
         self.allowed_words = r"php|javascript|nodejs|express|laravel|vue"
-        self.denied_words  = r"java|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
+        self.denied_words  = r"java$|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
         self.job     = job
 
     def __getattr__(self, name):
