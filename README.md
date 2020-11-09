@@ -8,7 +8,7 @@ Search a job and when you get a match, send me a message
 2. Write "/newbot" message, then follow the instructions, and **save** de **API TOKEN**
 3. Search your bot, open and send "/start" to start your bot.
 #### Get Your bot ID
-1. Open the browser and enter https://api.telegram.org/bot\<yourtoken>/getUpdates (replace by your token)
+1. Open the browser and enter https://api.telegram.org/botYOURTOKEN/getUpdates
 2. Look for the id
 
 Now you have the **token** and the **id**, create a .env file in the root and replace by your info
