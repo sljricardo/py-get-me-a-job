@@ -1,7 +1,8 @@
 import re
 import os
 
-from src.DB import DB
+from DB import DB
+
 
 class Job:
 
@@ -12,7 +13,8 @@ class Job:
         self.DB = DB(os.path.abspath('store'))
 
     def hasCorrectWords(self):
-        hasMatch = lambda patern, string: any(re.findall(patern, string, re.IGNORECASE))
+        def hasMatch(patern, string):
+            return any(re.findall(patern, string, re.IGNORECASE))
 
         if hasMatch(self.denied_words, self.job['content']):
             return False

@@ -1,7 +1,7 @@
 import requests
 
-from src.JobInterface import JobInterface
-from src.Job import Job
+from JobInterface import JobInterface
+from Job import Job
 
 
 class GitHubJobs(JobInterface):
@@ -11,11 +11,10 @@ class GitHubJobs(JobInterface):
         self.jobs = []
 
     def info(self, offer):
-        return  f"""
+        return f"""
 {offer['title']}
 🌍 {offer['location']} 🏢 {offer['company']} ⏱ {offer['type']}
-🔗 {offer['url']}\n"""              
-               
+🔗 {offer['url']}\n"""
 
     def getOffers(self):
         for job_offer in self.response.json():

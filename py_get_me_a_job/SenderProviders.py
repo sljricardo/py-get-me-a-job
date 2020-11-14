@@ -1,6 +1,7 @@
 import os
 
-from src.sender_providers.Telegram import Telegram  
+from sender_providers.Telegram import Telegram
+
 
 class SenderProviders:
 

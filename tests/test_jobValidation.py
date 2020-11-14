@@ -1,8 +1,9 @@
 import unittest
 import os
 
-from src.Job import Job
-from src.DB import DB
+from Job import Job
+from DB import DB
+
 
 class TestJobs(unittest.TestCase):
 
@@ -29,11 +30,12 @@ class TestJobs(unittest.TestCase):
 
     def test_if_job_already_exists_in_db_assert_true(self):
         db = DB(os.path.abspath('store-test'))
-        db.add('uid-test', { "title": "Php dev", "description": "dev php" })
+        db.add('uid-test', {"title": "Php dev", "description": "dev php"})
 
         self.assertTrue(db.hasKey('uid-test'))
         # Aflter assertion remove file
         os.remove('store-test')
+
 
 if __name__ == '__main__':
     unittest.main()
