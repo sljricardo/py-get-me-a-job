@@ -1,33 +1,34 @@
 import re
+import os
+
+from src.DB import DB
 
 class Job:
 
     def __init__(self, job):
+        self.job = job
         self.allowed_words = r"php|javascript|nodejs|express|laravel|vue"
-        self.denied_words  = r"java$|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
-        self.job     = job
+        self.denied_words = r"java$|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
+        self.DB = DB(os.path.abspath('store'))
 
-    def __getattr__(self, name):
-        return self.job[name]
+    def hasCorrectWords(self):
+        hasMatch = lambda patern, string: any(re.findall(patern, string, re.IGNORECASE))
 
-    def info(self):
-        return f"""
-        **New Job Alert**\n
-        **{ self.job['title'] }**\n
-        **{ self.job['location'] }**\n
-        **{ self.job['company'] }**\n
-        [company]({ self.job['company_logo'] })\n
-        [Read More]({ self.job['url'] }) """
+        if hasMatch(self.denied_words, self.job['content']):
+            return False
+        if hasMatch(self.allowed_words, self.job['content']):
+            return True
+
+        return False
+
+    def wasAlreadySended(self):
+        if self.DB.hasKey(self.job['uid']):
+            return True
 
     def isValid(self):
-
-        hasMatch    = lambda patern, string: any(re.findall(patern, string, re.IGNORECASE))
-        job_content = self.job['title'] + " " + self.job['description']
-
-        if hasMatch(self.denied_words, job_content):
-            return False
-
-        if hasMatch(self.allowed_words, job_content):
+        if not self.wasAlreadySended() and self.hasCorrectWords():
+            # Is valid, regist entry before return
+            self.DB.add(self.job['uid'])
             return True
 
         return False

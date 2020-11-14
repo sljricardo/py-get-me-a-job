@@ -1,22 +1,21 @@
-import os
-
+from src.JobProviders import JobProviders
+from src.SenderProviders import SenderProviders
 from dotenv import load_dotenv
-from src.Telegram import Telegram
-from src.JobProvider import JobProvider
 
-# Load content from .env file
-load_dotenv('.env')
+# Add provider class Here ...
+from src.providers.GitHubJobs import GitHubJobs
 
-jobs_providers = [
-    ('gitHubJobs','https://jobs.github.com/positions.json')
-]
+# Load Vars
+load_dotenv()
 
-for provider in jobs_providers:
+# Register provided added Here ...
+jobs = JobProviders({
+    'GitHubJobs': {
+        'class': GitHubJobs,
+        'endpoint': 'https://jobs.github.com/positions.json'
+    },
+    # ....
+}).getJobs()
 
-    jobs = JobProvider(provider).getJobs()
-
-    if jobs is not None:
-        Telegram(
-            os.getenv("BOT_TOKEN"),
-            os.getenv("BOT_ID")
-        ).send(jobs)
+# Send the jobs throw provider selected in .ENV
+SenderProviders().send(jobs)

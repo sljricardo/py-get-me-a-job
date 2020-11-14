@@ -1,17 +1,17 @@
 import unittest
 import os
 
-from src.Telegram import Telegram
+from src.sender_providers.Telegram import Telegram
 
 class TestSenderProviders(unittest.TestCase):
 
     def test_telegram_endpoint(self):
-        os.environ['ENV'] = 'dev'
-        telegram = Telegram("my-token-id", "my-uid")
-
+        token = os.environ.get('TELEGRAM_BOT_TOKEN')
+        uid = os.environ.get('TELEGRAM_BOT_ID')
+        
         self.assertEqual(
-            'https://api.telegram.org/botmy-token-id/sendMessage?chat_id=my-uid&parse_mode=Markdown&text=test-endpoint',
-            telegram.send("test-endpoint")
+            f'https://api.telegram.org/bot{token}/sendMessage?chat_id={uid}&parse_mode=Markdown&text=test-endpoint',
+            Telegram()._Telegram__endpoint("test-endpoint")
         )
     
 if __name__ == '__main__':
