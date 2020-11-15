@@ -8,8 +8,8 @@ class Job:
 
     def __init__(self, job):
         self.job = job
-        self.allowed_words = r"php|javascript|nodejs|express|laravel|vue"
-        self.denied_words = r"java$|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
+        self.allowed_words = r"php|javascript|nodejs|express$|laravel|vue"
+        self.denied_words = r"WooCommerce|shopify|wordpress|java$|c#|c\+\+|.net|ruby|rails|swift|Kotlin|golang|angular|react|scala|elixir"
         self.DB = DB(os.path.abspath('store'))
 
     def hasCorrectWords(self):
