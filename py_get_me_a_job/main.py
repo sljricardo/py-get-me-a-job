@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 # Add provider class Here ...
 from providers.GitHubJobs import GitHubJobs
+from providers.WorkingNomads import WorkingNomads
 
 
 def main():
@@ -16,6 +17,10 @@ def main():
             'class': GitHubJobs,
             'endpoint': 'https://jobs.github.com/positions.json'
         },
+        'WorkingNomads': {
+            'class': WorkingNomads,
+            'endpoint': 'https://www.workingnomads.co/api/exposed_jobs/'
+        }
         # ....
     }).getJobs()
 
